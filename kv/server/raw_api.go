@@ -17,7 +17,7 @@ func (server *Server) RawGet(_ context.Context, req *kvrpcpb.RawGetRequest) (*kv
 	key := req.GetKey()
 	cf := req.GetCf()
 	reader, _ := server.storage.Reader(req.Context)
-	value, err2 := reader.GetCF(cf, key)
+	value, err := reader.GetCF(cf, key)
 	response := &kvrpcpb.RawGetResponse{
 		Value:    value,
 		NotFound: false,
@@ -25,10 +25,10 @@ func (server *Server) RawGet(_ context.Context, req *kvrpcpb.RawGetRequest) (*kv
 	if value == nil {
 		response.NotFound = true
 	}
-	if err2 != nil {
-		response.Error = err2.Error()
+	if err != nil {
+		response.Error = err.Error()
 	}
-	return response, err2
+	return response, err
 
 }
 
